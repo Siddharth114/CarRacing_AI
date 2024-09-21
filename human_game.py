@@ -10,6 +10,7 @@ GRASS, TRACK, TRACK_BORDER = resize_images_to_largest(
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
 
 FINISH = pygame.image.load("assets/finish.png")
+FINISH_MASK = pygame.mask.from_surface(FINISH)
 FINISH_POSITION = (143,250)
 CAR = scale_image(pygame.image.load("assets/red-car.png"), 0.5)
 
@@ -116,8 +117,15 @@ while running:
 
     move_player(player_car)
 
-    if player_car.collide(TRACK_BORDER_MASK):
+    if player_car.collide(TRACK_BORDER_MASK) != None:
         player_car.bounce()
-    
+
+    finish_collision_point_of_intersection = player_car.collide(FINISH_MASK, *FINISH_POSITION)
+    if finish_collision_point_of_intersection  != None:
+        if finish_collision_point_of_intersection[1]==0:
+            player_car.bounce()
+        else:
+            print('finish')
+        
 
 pygame.quit()
