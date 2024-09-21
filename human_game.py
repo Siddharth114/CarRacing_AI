@@ -64,7 +64,7 @@ class AbstractCar:
         return point_of_intersection
     
     def bounce(self):
-        self.velocity *= -0.5
+        self.velocity *= -0.6
         self.move()
 
 
