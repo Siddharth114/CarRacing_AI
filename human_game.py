@@ -31,12 +31,12 @@ class AbstractCar:
 
     def rotate(self, left=False, right=False):
         if self.velocity != 0:
-            if self.velocity < 0:  # If the car is moving backward
+            if self.velocity < 0: 
                 if left:
                     self.angle -= self.rotation_velocity
                 elif right:
                     self.angle += self.rotation_velocity
-            else:  # If the car is moving forward or is stationary
+            else:  
                 if left:
                     self.angle += self.rotation_velocity
                 elif right:
@@ -46,7 +46,6 @@ class AbstractCar:
         blit_rotate_center(win, self.image, (self.x, self.y), self.angle)
 
     def move_forward(self):
-        # Cap the velocity if it is already in the max velocity
         self.velocity = min(self.velocity + self.acceleration, self.max_velocity)
         self.move()
 
@@ -63,7 +62,10 @@ class AbstractCar:
         self.x -= horizontal_velocity
 
     def reduce_speed(self):
-        self.velocity = max(self.velocity - self.acceleration/2, 0)
+        if self.velocity > 0: 
+            self.velocity = max(self.velocity - self.acceleration / 2, 0)
+        elif self.velocity < 0:
+            self.velocity = min(self.velocity + self.acceleration / 2, 0)
         self.move()
 
     def collide(self, mask, x=0, y=0):
