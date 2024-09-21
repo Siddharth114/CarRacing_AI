@@ -61,4 +61,11 @@ while running:
             running = False
             break
 
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+        human_car.rotate(left=True)
+    if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+        human_car.rotate(right=True)
+
 pygame.quit()
