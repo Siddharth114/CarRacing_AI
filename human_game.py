@@ -69,6 +69,11 @@ class AbstractCar:
         self.velocity *= -0.6
         self.move()
 
+    def reset(self):
+        self.x, self.y = self.START_POSITION
+        self.angle = 0
+        self.velocity = 0
+
 
 class HumanCar(AbstractCar):
     IMAGE = CAR
@@ -78,7 +83,7 @@ running = True
 FPS = 60
 clock = pygame.time.Clock()
 images = [(GRASS, (0,0)), (TRACK, (0,0)), (FINISH, FINISH_POSITION), (TRACK_BORDER, (0,0))]
-player_car = HumanCar(4,4)
+player_car = HumanCar(8,4)
 
 
 def draw(win, images, player_car):
@@ -125,7 +130,7 @@ while running:
         if finish_collision_point_of_intersection[1]==0:
             player_car.bounce()
         else:
-            print('finish')
+            player_car.reset()
         
 
 pygame.quit()
