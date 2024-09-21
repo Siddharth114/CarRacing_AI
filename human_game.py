@@ -39,6 +39,10 @@ class AbstractCar:
         self.velocity = min(self.velocity + self.acceleration, self.max_velocity)
         self.move()
 
+    def move_backward(self):
+        self.velocity = max(self.velocity - self.acceleration, -self.max_velocity/2)
+        self.move()
+
     def move(self):
         radians = math.radians(self.angle)
         vertical_velocity = math.cos(radians) * self.velocity
@@ -89,6 +93,9 @@ while running:
     if keys[pygame.K_w] or keys[pygame.K_UP]:
         moved=True
         human_car.move_forward()
+    if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+        moved=True
+        human_car.move_backward()
     
     if not moved:
         human_car.reduce_speed()
