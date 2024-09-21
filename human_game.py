@@ -7,6 +7,8 @@ GRASS, TRACK, TRACK_BORDER = resize_images_to_largest(
     ["assets/grass.jpg", "assets/track.png", "assets/track-border.png"]
 )
 
+TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
+
 FINISH = pygame.image.load("assets/finish.png")
 CAR = scale_image(pygame.image.load("assets/red-car.png"), 0.5)
 
@@ -53,6 +55,16 @@ class AbstractCar:
 
     def reduce_speed(self):
         self.velocity = max(self.velocity - self.acceleration/2, 0)
+        self.move()
+
+    def collide(self, mask, x=0, y=0):
+        car_mask = pygame.mask.from_surface(self.image)
+        offset = (int(self.x-x), int(self.y-y))
+        point_of_intersection = mask.overlap(car_mask, offset)
+        return point_of_intersection
+    
+    def bounce(self):
+        self.velocity *= -0.5
         self.move()
 
 
@@ -102,6 +114,9 @@ while running:
             break
 
     move_player(player_car)
+
+    if player_car.collide(TRACK_BORDER_MASK):
+        player_car.bounce()
     
 
 pygame.quit()
