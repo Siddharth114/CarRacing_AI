@@ -46,11 +46,19 @@ class AbstractCar:
         blit_rotate_center(win, self.image, (self.x, self.y), self.angle)
 
     def move_forward(self):
-        self.velocity = min(self.velocity + self.acceleration, self.max_velocity)
+        if self.velocity < 0:
+            self.velocity = min(self.velocity + self.acceleration * 2, 0)
+        else:
+            self.velocity = min(self.velocity + self.acceleration, self.max_velocity)
         self.move()
 
+
+
     def move_backward(self):
-        self.velocity = max(self.velocity - self.acceleration, -self.max_velocity/2)
+        if self.velocity > 0:
+            self.velocity = max(self.velocity - self.acceleration * 2, 0)
+        else:  
+            self.velocity = max(self.velocity - self.acceleration, -self.max_velocity / 2)
         self.move()
 
     def move(self):
