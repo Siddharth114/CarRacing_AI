@@ -30,10 +30,16 @@ class AbstractCar:
         self.acceleration = 0.1
 
     def rotate(self, left=False, right=False):
-        if left:
-            self.angle += self.rotation_velocity
-        elif right:
-            self.angle -= self.rotation_velocity
+        if self.velocity < 0:  # If the car is moving backward
+            if left:
+                self.angle -= self.rotation_velocity
+            elif right:
+                self.angle += self.rotation_velocity
+        else:  # If the car is moving forward or is stationary
+            if left:
+                self.angle += self.rotation_velocity
+            elif right:
+                self.angle -= self.rotation_velocity
     
     def draw(self, win):
         blit_rotate_center(win, self.image, (self.x, self.y), self.angle)
