@@ -64,7 +64,7 @@ running = True
 FPS = 60
 clock = pygame.time.Clock()
 images = [(GRASS, (0,0)), (TRACK, (0,0))]
-human_car = HumanCar(4,4)
+player_car = HumanCar(4,4)
 
 
 def draw(win, images, player_car):
@@ -73,31 +73,35 @@ def draw(win, images, player_car):
     player_car.draw(WIN)
     pygame.display.update()
 
+def move_player(player_car):
+    keys = pygame.key.get_pressed()
+    moved=False
+
+    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+        player_car.rotate(left=True)
+    if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+        player_car.rotate(right=True)
+    if keys[pygame.K_w] or keys[pygame.K_UP]:
+        moved=True
+        player_car.move_forward()
+    if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+        moved=True
+        player_car.move_backward()
+    
+    if not moved:
+        player_car.reduce_speed()
+
 while running:
     clock.tick(FPS)
 
-    draw(WIN, images, human_car)
+    draw(WIN, images, player_car)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             break
 
-    keys = pygame.key.get_pressed()
-    moved=False
-
-    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-        human_car.rotate(left=True)
-    if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-        human_car.rotate(right=True)
-    if keys[pygame.K_w] or keys[pygame.K_UP]:
-        moved=True
-        human_car.move_forward()
-    if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-        moved=True
-        human_car.move_backward()
+    move_player(player_car)
     
-    if not moved:
-        human_car.reduce_speed()
 
 pygame.quit()
