@@ -10,6 +10,7 @@ GRASS, TRACK, TRACK_BORDER = resize_images_to_largest(
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
 
 FINISH = pygame.image.load("assets/finish.png")
+FINISH_POSITION = (143,250)
 CAR = scale_image(pygame.image.load("assets/red-car.png"), 0.5)
 
 WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
@@ -75,7 +76,7 @@ class HumanCar(AbstractCar):
 running = True
 FPS = 60
 clock = pygame.time.Clock()
-images = [(GRASS, (0,0)), (TRACK, (0,0))]
+images = [(GRASS, (0,0)), (TRACK, (0,0)), (FINISH, FINISH_POSITION), (TRACK_BORDER, (0,0))]
 player_car = HumanCar(4,4)
 
 
