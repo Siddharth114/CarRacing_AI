@@ -57,7 +57,7 @@ class CarEnvironment:
                 reward += 100
 
         # Add a small reward for moving forward
-        reward += self.player_car.velocity * 0.1
+        reward += self.player_car.velocity
 
         return reward
 
