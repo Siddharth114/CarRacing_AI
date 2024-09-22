@@ -11,13 +11,12 @@ TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
 
 FINISH = pygame.image.load("assets/finish.png")
 FINISH_MASK = pygame.mask.from_surface(FINISH)
-FINISH_POSITION = (143, 250)
+FINISH_POSITION = (135, 250)
 CAR = scale_image(pygame.image.load("assets/red-car.png"), 0.5)
 
 WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Human Playable Game")
-
 
 class Car:
     def __init__(self, max_velocity, rotation_velocity):
@@ -26,7 +25,7 @@ class Car:
         self.velocity = 0
         self.rotation_velocity = rotation_velocity
         self.angle = 0
-        self.x, self.y = (180, 200)
+        self.x, self.y = (165, 200)
         self.acceleration = 0.1
 
     def rotate(self, left=False, right=False):

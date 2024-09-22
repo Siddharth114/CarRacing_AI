@@ -5,8 +5,8 @@ def resize_images_to_largest(image_paths):
 
     sizes = [image.get_size() for image in images]
 
-    max_width = max(size[0] for size in sizes)
-    max_height = max(size[1] for size in sizes)
+    max_width = min(max(size[0] for size in sizes), 800)
+    max_height = min(max(size[1] for size in sizes), 800)
     max_size = (max_width, max_height)
 
     resized_images = [pygame.transform.scale(image, max_size) for image in images]
