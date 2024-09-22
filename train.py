@@ -1,6 +1,8 @@
 import pygame
 import time
 import os
+import matplotlib.pyplot as plt
+from datetime import datetime
 from environment import CarEnvironment
 from agent import QLearningAgent
 import config
@@ -25,6 +27,10 @@ def train():
     pygame.display.set_caption("RL Car Racing Game")
     if not os.path.exists('models'):
         os.makedirs('models')
+    if not os.path.exists('training_runs'):
+        os.makedirs('training_runs')
+
+    rewards = []
 
     for episode in range(config.NUM_EPISODES):
         state = env.reset()
@@ -49,7 +55,11 @@ def train():
                 stuck_steps = 0
             last_position = current_position
             if stuck_steps >= config.TIMEOUT_STEPS:
+                print('Timeout steps reached')
                 done = True
+            if total_reward<=-10000:
+                print('Max negative rewards')
+                done=True
 
             # Render the game state
             main_surface.fill((50, 50, 50))  # Dark grey background
@@ -88,11 +98,20 @@ def train():
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                    plt.figure()
+                    plt.plot(range(1, config.NUM_EPISODES + 1), rewards)
+                    plt.xlabel('Episode')
+                    plt.ylabel('Total Reward')
+                    plt.title('Episode vs Reward')
+                    plt.grid(True)
+                    plt.savefig(f'training_runs/training_run_{timestamp}.png')
                     pygame.quit()
                     return
 
             step += 1
 
+        rewards.append(total_reward)
         print(f"Episode {episode + 1}, Total Reward: {total_reward}")
         # Save the model periodically
         if (episode + 1) % config.SAVE_INTERVAL == 0:
