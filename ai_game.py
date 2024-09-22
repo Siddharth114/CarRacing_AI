@@ -26,7 +26,8 @@ class Car:
         self.velocity = 0
         self.rotation_velocity = rotation_velocity
         self.angle = 0
-        self.x, self.y = (180, 200)
+        self.START_POSITION = (180, 200)
+        self.x, self.y = self.START_POSITION
         self.acceleration = 0.1
 
     def rotate(self, left=False, right=False):
