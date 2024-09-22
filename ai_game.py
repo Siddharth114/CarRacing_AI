@@ -84,7 +84,7 @@ class Car:
         return point_of_intersection
 
     def bounce(self):
-        self.velocity *= -0.6
+        self.velocity *= -1
         self.move()
 
     def reset(self):

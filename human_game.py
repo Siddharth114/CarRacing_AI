@@ -25,7 +25,8 @@ class Car:
         self.velocity = 0
         self.rotation_velocity = rotation_velocity
         self.angle = 0
-        self.x, self.y = (165, 200)
+        self.START_POSITION = (165, 200)
+        self.x, self.y = self.START_POSITION
         self.acceleration = 0.1
 
     def rotate(self, left=False, right=False):
@@ -82,7 +83,7 @@ class Car:
         return point_of_intersection
 
     def bounce(self):
-        self.velocity *= -0.6
+        self.velocity *= -1
         self.move()
 
     def reset(self):
@@ -100,7 +101,7 @@ images = [
     (FINISH, FINISH_POSITION),
     (TRACK_BORDER, (0, 0)),
 ]
-player_car = Car(8, 4)
+player_car = Car(6, 4)
 
 
 def draw(win, images, player_car):
@@ -133,7 +134,8 @@ while running:
     clock.tick(FPS)
 
     draw(WIN, images, player_car)
-
+    if player_car.velocity<0:
+        print(player_car.velocity)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

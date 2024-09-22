@@ -13,7 +13,7 @@ from utils import discretize_state
 
 class CarEnvironment:
     def __init__(self):
-        self.player_car = Car(8, 4)
+        self.player_car = Car(6, 4)
         self.reset()
 
     def reset(self):
