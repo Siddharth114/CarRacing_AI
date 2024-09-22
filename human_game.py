@@ -21,12 +21,12 @@ pygame.display.set_caption("Human Playable Game")
 
 class AbstractCar:
     def __init__(self, max_velocity, rotation_velocity):
-        self.image = self.IMAGE
+        self.image = CAR
         self.max_velocity = max_velocity
         self.velocity = 0
         self.rotation_velocity = rotation_velocity
         self.angle = 0
-        self.x, self.y = self.START_POSITION
+        self.x, self.y = (180,200)
         self.acceleration = 0.1
 
     def rotate(self, left=False, right=False):
@@ -92,15 +92,11 @@ class AbstractCar:
         self.velocity = 0
 
 
-class HumanCar(AbstractCar):
-    IMAGE = CAR
-    START_POSITION = (180,200)
-
 running = True
 FPS = 60
 clock = pygame.time.Clock()
 images = [(GRASS, (0,0)), (TRACK, (0,0)), (FINISH, FINISH_POSITION), (TRACK_BORDER, (0,0))]
-player_car = HumanCar(8,4)
+player_car = AbstractCar(8,4)
 
 
 def draw(win, images, player_car):
