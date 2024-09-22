@@ -8,7 +8,7 @@ from agent import QLearningAgent
 import config
 import pickle
 from utils import draw_actions
-from ai_game import GRASS, TRACK, TRACK_BORDER, FINISH, FINISH_POSITION, WIDTH, HEIGHT
+from ai_game import GRASS, TRACK, TRACK_BORDER, TRACK_BORDER_MASK, FINISH, FINISH_POSITION, WIDTH, HEIGHT
 
 def train():
     pygame.init()
@@ -70,6 +70,11 @@ def train():
             game_surface.blit(FINISH, FINISH_POSITION)
             game_surface.blit(TRACK_BORDER, (0, 0))
             env.player_car.draw(game_surface)
+
+            # Visualize collision
+            if env.player_car.collide(TRACK_BORDER_MASK) is not None:
+                pygame.draw.circle(game_surface, (255, 0, 0), (int(env.player_car.x), int(env.player_car.y)), 5)
+
             main_surface.blit(game_surface, (0, 0))
             
             # Draw the info panel
@@ -100,7 +105,7 @@ def train():
                 if event.type == pygame.QUIT:
                     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
                     plt.figure()
-                    plt.plot(range(1, config.NUM_EPISODES + 1), rewards)
+                    plt.plot(range(len(rewards)), rewards)
                     plt.xlabel('Episode')
                     plt.ylabel('Total Reward')
                     plt.title('Episode vs Reward')

@@ -1,5 +1,5 @@
 import pygame
-import time
+import random
 import math
 from game_utils import resize_images_to_largest, scale_image, blit_rotate_center
 
@@ -29,6 +29,7 @@ class Car:
         self.START_POSITION = (165, 200)
         self.x, self.y = self.START_POSITION
         self.acceleration = 0.1
+        self.previous_position = self.START_POSITION
 
     def rotate(self, left=False, right=False):
         if self.velocity != 0:
@@ -67,8 +68,18 @@ class Car:
         vertical_velocity = math.cos(radians) * self.velocity
         horizontal_velocity = math.sin(radians) * self.velocity
 
+        self.previous_position = (self.x, self.y)
+
         self.y -= vertical_velocity
         self.x -= horizontal_velocity
+    
+    def handle_collision(self):
+        # Move the car back to its previous position
+        self.x, self.y = self.previous_position
+        # Reduce the velocity
+        self.velocity *= 0.5
+        # Slightly adjust the angle to prevent getting stuck
+        self.angle += 5 if random.random() > 0.5 else -5
 
     def reduce_speed(self):
         if self.velocity > 0:

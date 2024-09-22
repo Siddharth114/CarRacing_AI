@@ -22,10 +22,14 @@ class CarEnvironment:
 
     def step(self, action):
         self.take_action(action)
+        if self.player_car.collide(TRACK_BORDER_MASK) is not None:
+            self.player_car.handle_collision()
+
         new_state = self.get_state()
         reward = self.calculate_reward()
         done = self.is_done()
         return new_state, reward, done
+
 
     def take_action(self, action):
         if action == 0:  # Left
@@ -52,11 +56,11 @@ class CarEnvironment:
         finish_collision = self.player_car.collide(FINISH_MASK, *FINISH_POSITION)
         if finish_collision is not None:
             if finish_collision[1] == 0:
+                self.player_car.handle_collision()
                 reward -= 5
             else:
                 reward += 100
 
-        # Add a small reward for moving forward
         reward += self.player_car.velocity
 
         return reward
