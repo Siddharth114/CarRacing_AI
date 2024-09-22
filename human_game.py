@@ -134,8 +134,6 @@ while running:
     clock.tick(FPS)
 
     draw(WIN, images, player_car)
-    if player_car.velocity<0:
-        print(player_car.velocity)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
