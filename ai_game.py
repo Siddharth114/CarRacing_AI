@@ -16,7 +16,7 @@ CAR = scale_image(pygame.image.load("assets/red-car.png"), 0.5)
 
 WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Human Playable Game")
+pygame.display.set_caption("RL Car Racing Game")
 
 
 class Car:
@@ -90,69 +90,3 @@ class Car:
         self.x, self.y = self.START_POSITION
         self.angle = 0
         self.velocity = 0
-
-
-running = True
-FPS = 60
-clock = pygame.time.Clock()
-images = [
-    (GRASS, (0, 0)),
-    (TRACK, (0, 0)),
-    (FINISH, FINISH_POSITION),
-    (TRACK_BORDER, (0, 0)),
-]
-player_car = Car(8, 4)
-
-
-def draw(win, images, player_car):
-    for image, position in images:
-        win.blit(image, position)
-    player_car.draw(WIN)
-    pygame.display.update()
-
-
-def move_player(player_car):
-    keys = pygame.key.get_pressed()
-    moved = False
-
-    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-        player_car.rotate(left=True)
-    if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-        player_car.rotate(right=True)
-    if keys[pygame.K_w] or keys[pygame.K_UP]:
-        moved = True
-        player_car.move_forward()
-    if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-        moved = True
-        player_car.move_backward()
-
-    if not moved:
-        player_car.reduce_speed()
-
-
-while running:
-    clock.tick(FPS)
-
-    draw(WIN, images, player_car)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            break
-
-    move_player(player_car)
-
-    if player_car.collide(TRACK_BORDER_MASK) != None:
-        player_car.bounce()
-
-    finish_collision_point_of_intersection = player_car.collide(
-        FINISH_MASK, *FINISH_POSITION
-    )
-    if finish_collision_point_of_intersection != None:
-        if finish_collision_point_of_intersection[1] == 0:
-            player_car.bounce()
-        else:
-            player_car.reset()
-
-
-pygame.quit()
