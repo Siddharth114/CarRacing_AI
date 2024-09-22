@@ -9,15 +9,15 @@ def draw_actions(surface, action):
     key_surface.fill((50, 50, 50))
     
     keys = [
-        ((80, 0, 80, 80), [(80, 20), (60, 60), (100, 60)]),   # Up
-        ((0, 80, 80, 80), [(20, 80), (60, 60), (60, 100)]),   # Left
-        ((160, 80, 80, 80), [(140, 80), (100, 60), (100, 100)]), # Right
-        ((80, 160, 80, 80), [(80, 140), (60, 100), (100, 100)])  # Down
+        ((40, 0, 80, 40), [(80, 10), (70, 30), (90, 30)]),   # Up
+        ((0, 40, 40, 80), [(10, 80), (30, 70), (30, 90)]),   # Left
+        ((120, 40, 40, 80), [(150, 80), (130, 70), (130, 90)]), # Right
+        ((40, 120, 80, 40), [(80, 150), (70, 130), (90, 130)])  # Down
     ]
     
     for i, (rect, arrow) in enumerate(keys):
         color = (255, 255, 255) if action == i else (100, 100, 100)
-        pygame.draw.rect(key_surface, color, rect)
+        pygame.draw.rect(key_surface, color, rect, border_radius=5)  # Rounded rectangles for key shape
         pygame.draw.polygon(key_surface, (0, 0, 0), arrow)
     
     # Draw the "do nothing" action
@@ -25,5 +25,4 @@ def draw_actions(surface, action):
         pygame.draw.circle(key_surface, (255, 255, 255), (80, 80), 20)
     else:
         pygame.draw.circle(key_surface, (100, 100, 100), (80, 80), 20)
-    
     return key_surface
