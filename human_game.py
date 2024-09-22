@@ -1,5 +1,5 @@
 import pygame
-import time
+import random
 import math
 from game_utils import resize_images_to_largest, scale_image, blit_rotate_center
 
@@ -28,6 +28,8 @@ class Car:
         self.START_POSITION = (165, 200)
         self.x, self.y = self.START_POSITION
         self.acceleration = 0.1
+        self.previous_position = self.START_POSITION
+
 
     def rotate(self, left=False, right=False):
         if self.velocity != 0:
@@ -66,8 +68,14 @@ class Car:
         vertical_velocity = math.cos(radians) * self.velocity
         horizontal_velocity = math.sin(radians) * self.velocity
 
-        self.y -= vertical_velocity
-        self.x -= horizontal_velocity
+        new_y = self.y - vertical_velocity
+        new_x = self.x - horizontal_velocity
+
+        # Store the current position before updating
+        self.previous_position = (self.x, self.y)
+
+        self.y = new_y
+        self.x = new_x
 
     def reduce_speed(self):
         if self.velocity > 0:
@@ -81,6 +89,11 @@ class Car:
         offset = (int(self.x - x), int(self.y - y))
         point_of_intersection = mask.overlap(car_mask, offset)
         return point_of_intersection
+    
+    def handle_collision(self):
+        self.x, self.y = self.previous_position
+        self.velocity *= 0.5
+        self.angle += 5 if random.random() > 0.5 else -5
 
     def bounce(self):
         self.velocity *= -1
@@ -129,6 +142,9 @@ def move_player(player_car):
     if not moved:
         player_car.reduce_speed()
 
+    if player_car.collide(TRACK_BORDER_MASK) is not None:
+        player_car.handle_collision()
+
 
 while running:
     clock.tick(FPS)
@@ -141,15 +157,12 @@ while running:
 
     move_player(player_car)
 
-    if player_car.collide(TRACK_BORDER_MASK) != None:
-        player_car.bounce()
-
     finish_collision_point_of_intersection = player_car.collide(
         FINISH_MASK, *FINISH_POSITION
     )
-    if finish_collision_point_of_intersection != None:
+    if finish_collision_point_of_intersection is not None:
         if finish_collision_point_of_intersection[1] == 0:
-            player_car.bounce()
+            player_car.handle_collision()
         else:
             player_car.reset()
 
