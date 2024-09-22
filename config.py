@@ -5,4 +5,6 @@ EPSILON = 0.1
 NUM_EPISODES = 1000
 
 # Game parameters
-FPS = 30
+FPS = 60
+TIMEOUT_STEPS = 300  # Number of steps before timeout
+SAVE_INTERVAL = 100

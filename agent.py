@@ -8,7 +8,7 @@ class QLearningAgent:
         self.discount_factor = discount_factor
         self.epsilon = epsilon
         self.q_table = {}
-
+        
     def get_q_value(self, state, action):
         return self.q_table.get((state, action), 0.0)
 

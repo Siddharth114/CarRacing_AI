@@ -14,8 +14,6 @@ from utils import discretize_state
 class CarEnvironment:
     def __init__(self):
         self.player_car = Car(8, 4)
-        self.WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("RL Car Racing Game")
         self.reset()
 
     def reset(self):
@@ -69,4 +67,4 @@ class CarEnvironment:
         return False
 
     def render(self):
-        pygame.display.update()
+        pass
