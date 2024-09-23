@@ -1,9 +1,11 @@
 import pygame
 
 def discretize_state(x, y, angle):
+    # Discretize the continuous state space (car's position and angle) into a discrete representation.
     return (int(x // 10), int(y // 10), int(angle // 10))
 
 def draw_actions(surface, action):
+    # Draw a visualization of the available actions on the given surface.
     key_surface = pygame.Surface((160, 160))
     key_surface.set_alpha(128)
     key_surface.fill((50, 50, 50))
