@@ -57,7 +57,8 @@ class CarEnvironment:
         reward = 0
         # Penalize collision with track border
         if self.player_car.collide(TRACK_BORDER_MASK) is not None:
-            reward -= 10
+            print('collision')
+            reward = (-10*reward)
 
         # Check finish line collision
         finish_collision = self.player_car.collide(FINISH_MASK, *FINISH_POSITION)
@@ -69,7 +70,10 @@ class CarEnvironment:
                 reward += 100
 
         # Reward for moving forward along the track
-        reward += self.player_car.velocity
+        if self.player_car.velocity > 0:
+            reward += self.player_car.velocity * 0.5
+        else:
+            reward -= 1 
 
         return reward
 
