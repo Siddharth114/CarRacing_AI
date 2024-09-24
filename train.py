@@ -118,16 +118,11 @@ def train():
 
         rewards.append(total_reward)
         print(f"Episode {episode + 1}, Total Reward: {total_reward}")
-        # Save the model periodically
-        if (episode + 1) % config.SAVE_INTERVAL == 0:
-            with open(f'models/q_table_episode_{episode + 1}.pkl', 'wb') as f:
-                pickle.dump(agent.q_table, f)
-            print(f"Model saved at episode {episode + 1}")
         # Decay epsilon
         agent.epsilon = max(0.01, agent.epsilon * 0.995)
 
     # Save the final trained Q-table
-    with open('models/q_table_final.pkl', 'wb') as f:
+    with open(f'models/q_table_final_{timestamp}.pkl', 'wb') as f:
         pickle.dump(agent.q_table, f)
 
     pygame.quit()
