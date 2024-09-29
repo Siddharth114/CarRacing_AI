@@ -1,6 +1,7 @@
 import pygame
 from ai_game import (
     Car,
+    TRACK,
     TRACK_BORDER_MASK,
     FINISH_MASK,
     FINISH_POSITION,
@@ -47,17 +48,24 @@ class CarEnvironment:
             self.player_car.reduce_speed()
 
     def get_state(self):
-        # Get the current state of the environment.
-        return discretize_state(
-            self.player_car.x, self.player_car.y, self.player_car.angle
-        )
+        # Get distances to track borders
+        distances = self.player_car.get_distances_to_border(TRACK_BORDER_MASK)
+        
+        # Discretize the car's position, angle, and distances
+        x_discrete = discretize_state(self.player_car.x, 0, TRACK.get_width(), 10)
+        y_discrete = discretize_state(self.player_car.y, 0, TRACK.get_height(), 10)
+        angle_discrete = discretize_state(self.player_car.angle, 0, 360, 8)
+        distances_discrete = [discretize_state(d, 0, max(TRACK.get_width(), TRACK.get_height()), 5) for d in distances]
+        
+        # Combine all state information
+        state = (x_discrete, y_discrete, angle_discrete, *distances_discrete)
+        return state
 
     def calculate_reward(self):
         # Calculate the reward for the current state.
         reward = 0
         # Penalize collision with track border
         if self.player_car.collide(TRACK_BORDER_MASK) is not None:
-            print('collision')
             reward = -100
             return reward
 
@@ -84,6 +92,3 @@ class CarEnvironment:
         if self.player_car.collide(FINISH_MASK, *FINISH_POSITION) is not None:
             return True
         return False
-
-    def render(self):
-        pass

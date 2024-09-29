@@ -1,5 +1,5 @@
 import pygame
-import time
+import math
 import os
 import matplotlib.pyplot as plt
 from datetime import datetime
@@ -71,9 +71,11 @@ def train():
             game_surface.blit(TRACK_BORDER, (0, 0))
             env.player_car.draw(game_surface)
 
-            # Visualize collision
-            if env.player_car.collide(TRACK_BORDER_MASK) is not None:
-                pygame.draw.circle(game_surface, (255, 0, 0), (int(env.player_car.x), int(env.player_car.y)), 5)
+            for angle in range(0, 360, 45):
+                distance = env.player_car.ray_cast(TRACK_BORDER_MASK, angle)
+                end_x = env.player_car.x + distance * math.cos(math.radians(angle))
+                end_y = env.player_car.y + distance * math.sin(math.radians(angle))
+                pygame.draw.line(game_surface, (192, 235, 166), (int(env.player_car.x), int(env.player_car.y)), (int(end_x), int(end_y)), 1)
 
             main_surface.blit(game_surface, (0, 0))
             

@@ -146,3 +146,25 @@ class Car:
         self.rotated_image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
         self.mask = pygame.mask.from_surface(self.rotated_image)
+
+    def get_distances_to_border(self, track_border_mask):
+        distances = []
+        for angle in range(0, 360, 45):  # Check 8 directions
+            distance = self.ray_cast(track_border_mask, angle)
+            distances.append(distance)
+        return distances
+
+    def ray_cast(self, mask, angle):
+        length = 0
+        max_length = max(TRACK.get_width(), TRACK.get_height())
+        x, y = self.rect.center
+
+        while length < max_length:
+            length += 1
+            target_x = x + length * math.cos(math.radians(angle))
+            target_y = y + length * math.sin(math.radians(angle))
+            
+            if mask.get_at((int(target_x), int(target_y))):
+                return length
+        
+        return max_length
