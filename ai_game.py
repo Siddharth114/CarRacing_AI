@@ -43,22 +43,23 @@ class Car:
         self.previous_position = self.START_POSITION
         self.rotated_image = pygame.transform.rotate(self.image, self.angle)
         self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
+        self.min_velocity_for_rotation = 0.1
 
     def rotate(self, left=False, right=False):
         """Rotate the car image and update the mask."""
-        if self.velocity != 0:
-            if self.velocity < 0:
+        if abs(self.velocity) >= self.min_velocity_for_rotation:
+            if self.velocity > 0:
                 if left:
-                    self.angle -= self.rotation_velocity
-                elif right:
                     self.angle += self.rotation_velocity
+                elif right:
+                    self.angle -= self.rotation_velocity
             else:
                 if left:
-                    self.angle += self.rotation_velocity
-                elif right:
                     self.angle -= self.rotation_velocity
+                elif right:
+                    self.angle += self.rotation_velocity
 
-            # Rotate the original image to get the new rotated image
+            # Update rotated image and mask
             self.rotated_image = pygame.transform.rotate(self.original_image, self.angle)
             self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
             self.mask = pygame.mask.from_surface(self.rotated_image)

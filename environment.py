@@ -46,6 +46,7 @@ class CarEnvironment:
             self.player_car.move_backward()
         else:  # Do nothing
             self.player_car.reduce_speed()
+        self.player_car.move()
 
     def get_state(self):
         # Get distances to track borders
