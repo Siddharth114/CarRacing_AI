@@ -67,7 +67,7 @@ class CarEnvironment:
         reward = 0
         # Penalize collision with track border
         if self.player_car.collide(TRACK_BORDER_MASK) is not None:
-            reward = -100
+            reward = -5
             return reward
 
         # Check finish line collision
