@@ -109,7 +109,7 @@ def train():
                 if event.type == pygame.QUIT:
                     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
                     plt.figure()
-                    plt.plot(range(len(rewards)), rewards)
+                    plt.plot(range(len(rewards)), rewards, linestyle='--', marker='o')
                     plt.xlabel('Episode')
                     plt.ylabel('Total Reward')
                     plt.title('Episode vs Reward')
