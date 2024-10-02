@@ -124,10 +124,7 @@ class Car:
 
     def handle_collision(self):
         """Handle collision by reverting to previous position and adjusting velocity and angle."""
-        self.x, self.y = self.previous_position
-        self.rect.center = (self.x, self.y)
         self.velocity *= 0.5  # Reduce speed upon collision
-        self.angle += 5 if random.random() > 0.5 else -5  # Slightly rotate the car
 
         # Update the rotated image and mask after angle change
         self.rotated_image = pygame.transform.rotate(self.original_image, self.angle)
