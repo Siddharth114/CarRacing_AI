@@ -57,7 +57,7 @@ def train():
             if stuck_steps >= config.TIMEOUT_STEPS:
                 print('Timeout steps reached')
                 done = True
-            if total_reward<=-10000:
+            if total_reward<=-config.MAX_NEGATIVE_REWARD:
                 print('Max negative rewards')
                 done=True
 
