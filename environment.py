@@ -93,3 +93,12 @@ class CarEnvironment:
         if self.player_car.collide(FINISH_MASK, *FINISH_POSITION) is not None:
             return True
         return False
+    
+
+class ParallelLearningCarEnvironment:
+    def __init__(self, num_cars=10):
+        self.num_cars = num_cars
+        self.cars = [Car(6,4) for _ in range(self.num_cars)]
+        self.active_cars = list(range(self.num_cars))
+        self.car_rewards = [0 for _ in range(self.num_cars)]
+        self.reset()
