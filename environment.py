@@ -121,7 +121,7 @@ class ParallelLearningCarEnvironment:
                 car.handle_collision()
 
             new_state = self.get_state(car)
-            reward = self.get_reward(car)
+            reward = self.calculate_reward(car)
             done = self.is_done(car)
 
             self.car_rewards[idx] += reward
