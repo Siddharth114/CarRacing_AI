@@ -6,6 +6,6 @@ NUM_EPISODES = 1000
 
 # Game parameters
 FPS = 120
-TIMEOUT_STEPS = 50  # Number of steps before timeout
+STUCK_TIMEOUT_STEPS = 50  # Number of steps before timeout
 SAVE_INTERVAL = 10
 MAX_NEGATIVE_REWARD = 1000
