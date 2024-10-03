@@ -47,8 +47,6 @@ def train():
         total_reward = 0
         done = False
         step = 0
-        last_position = None
-        stuck_steps = 0
 
         while not done:
             action = agent.choose_action(state)
