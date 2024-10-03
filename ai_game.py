@@ -41,6 +41,7 @@ class Car:
         self.x, self.y = self.START_POSITION
         self.acceleration = 0.1
         self.previous_position = self.START_POSITION
+        self.stuck_steps = 0
         self.rotated_image = pygame.transform.rotate(self.image, self.angle)
         self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
         self.min_velocity_for_rotation = 0.1
@@ -92,6 +93,11 @@ class Car:
 
         new_y = self.y - vertical_velocity
         new_x = self.x - horizontal_velocity
+
+        if self.previous_position == (self.x, self.y):
+            self.stuck_steps += 1 
+        else:
+            self.stuck_steps = 0
 
         # Store the current position before updating
         self.previous_position = (self.x, self.y)
