@@ -10,6 +10,7 @@ from ai_game import (
     HEIGHT,
 )
 from utils import discretize_state
+import config
 
 
 class CarEnvironment:
@@ -122,7 +123,7 @@ class ParallelLearningCarEnvironment:
 
             new_state = self.get_state(car)
             reward = self.calculate_reward(car)
-            done = self.is_done(car)
+            done = self.is_done(idx)
 
             self.car_rewards[idx] += reward
 
@@ -178,8 +179,11 @@ class ParallelLearningCarEnvironment:
             reward -= 1 
         return reward
     
-    def is_done(self, car):
-        if car.collide(FINISH_MASK, *FINISH_POSITION) is not None:
+    def is_done(self, idx):
+        if self.cars[idx].stuck_steps >= config.STUCK_TIMEOUT_STEPS or self.car_rewards[idx]<=-config.MAX_NEGATIVE_REWARD:
+            print(self.active_cars)
+            return True
+        if self.cars[idx].collide(FINISH_MASK, *FINISH_POSITION) is not None:
             return True
         return False
 

@@ -1,12 +1,9 @@
 import pygame
 import math
-import os
 import matplotlib.pyplot as plt
-from datetime import datetime
 from environment import ParallelLearningCarEnvironment
 from agent import ParallelQLearningAgent
 import config
-import pickle
 from utils import draw_actions
 from ai_game import (
     GRASS,
@@ -59,7 +56,7 @@ def train():
         step = 0
         current_episode_best = float("-inf")
 
-        while not population_done and step < config.STUCK_TIMEOUT_STEPS:
+        while not population_done:
             actions = agent.choose_actions(states)
             next_states, rewards, dones, population_done = env.step(actions)
 
