@@ -31,3 +31,40 @@ class QLearningAgent:
         # Q-learning update rule
         new_q = current_q + self.learning_rate * (reward + self.discount_factor * next_max_q - current_q)
         self.q_table[(state, action)] = new_q
+
+class ParallelQLearningAgent:
+    def __init__(self, action_space, num_agents, learning_rate=0.1, discount_factor=0.95, epsilon=1.0):
+        self.action_space = action_space
+        self.num_agents = num_agents
+        self.learning_rate = learning_rate
+        self.discount_factor = discount_factor
+        self.epsilon = epsilon
+        self.q_tables = [{}] * num_agents
+
+    def choose_actions(self, states):
+        actions = []
+        for state, q_table in zip(states, self.q_tables):
+            if random.random() < self.epsilon:
+                actions.append(random.choice(self.action_space))
+            else:
+                if state in q_table:
+                    actions.append(max(self.action_space, key=lambda a: q_table[state].get(a, 0)))
+                else:
+                    actions.append(random.choice(self.action_space))
+        return actions
+    
+    def update_q_values(self, states, actions, rewards, next_states):
+        for i, (state, action, reward, next_state) in enumerate(zip(states, actions, rewards, next_states)):
+            if state not in self.q_tables[i]:
+                self.q_tables[i][state] = {a: 0 for a in self.action_space}
+            if next_state not in self.q_tables[i]:
+                self.q_tables[i][next_state] = {a: 0 for a in self.action_space}
+            
+            next_max = max(self.q_tables[i][next_state].values())
+            self.q_tables[i][state][action] += self.learning_rate * (
+                reward + self.discount_factor * next_max - self.q_tables[i][state][action]
+            )
+
+    def clone_best_q_table(self, best_index):
+        best_q_table = self.q_tables[best_index]
+        self.q_tables = [best_q_table.copy() for _ in range(self.num_agents)]
