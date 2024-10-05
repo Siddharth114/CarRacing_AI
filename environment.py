@@ -1,4 +1,3 @@
-import pygame
 from ai_game import (
     Car,
     TRACK,
@@ -181,7 +180,6 @@ class ParallelLearningCarEnvironment:
     
     def is_done(self, idx):
         if self.cars[idx].stuck_steps >= config.STUCK_TIMEOUT_STEPS or self.car_rewards[idx]<=-config.MAX_NEGATIVE_REWARD:
-            print(self.active_cars)
             return True
         if self.cars[idx].collide(FINISH_MASK, *FINISH_POSITION) is not None:
             return True
