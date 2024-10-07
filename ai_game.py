@@ -137,6 +137,7 @@ class Car:
         self.x, self.y = self.START_POSITION
         self.angle = 270
         self.velocity = 0
+        self.stuck_steps = 0
         self.rotated_image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
         self.mask = pygame.mask.from_surface(self.rotated_image)

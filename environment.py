@@ -15,9 +15,11 @@ import config
 class CarEnvironment:
     def __init__(self):
         self.player_car = Car(6, 4)
+        self.total_reward = 0
         self.reset()
 
     def reset(self):
+        self.total_reward = 0
         self.player_car.reset()
         return self.get_state()
 
@@ -60,6 +62,7 @@ class CarEnvironment:
         reward = 0
         if self.player_car.collide(TRACK_BORDER_MASK) is not None:
             reward = -5
+            self.total_reward+=reward
             return reward
 
         finish_collision = self.player_car.collide(FINISH_MASK, *FINISH_POSITION)
@@ -74,10 +77,12 @@ class CarEnvironment:
             reward += self.player_car.velocity * 0.5
         else:
             reward -= 1 
-
+        self.total_reward+=reward
         return reward
 
     def is_done(self):
+        if self.player_car.stuck_steps >= config.STUCK_TIMEOUT_STEPS or self.total_reward <= -config.MAX_NEGATIVE_REWARD:
+            return True
         if self.player_car.collide(FINISH_MASK, *FINISH_POSITION) is not None:
             return True
         return False

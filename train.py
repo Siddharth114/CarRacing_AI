@@ -48,18 +48,13 @@ def train():
         step = 0
 
         while not done:
-            action = agent.choose_action(state)
+            # action = agent.choose_action(state)
+            action = 4
             next_state, reward, done = env.step(action)
             agent.update_q_value(state, action, reward, next_state)
             state = next_state
             total_reward += reward
 
-            if env.player_car.stuck_steps >= config.STUCK_TIMEOUT_STEPS:
-                print("Timeout steps reached")
-                done = True
-            if total_reward <= -config.MAX_NEGATIVE_REWARD:
-                print("Max negative rewards")
-                done = True
 
             main_surface.fill((50, 50, 50))
             game_surface = pygame.Surface((WIDTH, HEIGHT))
