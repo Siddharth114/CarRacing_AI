@@ -4,26 +4,20 @@ import random
 import math
 from game_utils import resize_images_to_largest, scale_image
 
-# Initialize Pygame
 pygame.init()
 
-# Resize images to the largest size among them
 GRASS, TRACK, TRACK_BORDER = resize_images_to_largest(
     ["assets/grass.jpg", "assets/bahrain_track.png", "assets/bahrain_track_border.png"]
 )
 
-# Create masks for collision detection
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
 
-# Load finish line image and mask
 FINISH = pygame.image.load("assets/finish.png")
 FINISH_MASK = pygame.mask.from_surface(FINISH)
 FINISH_POSITION = (480, 720)
 
-# Load and scale car image
 CAR = scale_image(pygame.image.load("assets/red-car.png"), 0.5)
 
-# Set up display
 WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Human Playable Game")
@@ -60,7 +54,6 @@ class Car:
                 elif right:
                     self.angle += self.rotation_velocity
 
-            # Update rotated image and mask
             self.rotated_image = pygame.transform.rotate(self.original_image, self.angle)
             self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
             self.mask = pygame.mask.from_surface(self.rotated_image)
@@ -99,7 +92,6 @@ class Car:
         else:
             self.stuck_steps = 0
 
-        # Store the current position before updating
         self.previous_position = (self.x, self.y)
 
         self.y = new_y

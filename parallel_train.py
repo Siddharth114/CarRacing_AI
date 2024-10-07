@@ -63,7 +63,6 @@ def train():
 
             states = [s for s, d in zip(next_states, dones) if not d]
 
-            # Update current episode best reward
             if env.car_rewards:
                 current_episode_best = max(max(env.car_rewards), current_episode_best)
                 best_reward_ever = max(best_reward_ever, current_episode_best)
@@ -75,7 +74,6 @@ def train():
             game_surface.blit(TRACK, (0, 0))
             game_surface.blit(FINISH, FINISH_POSITION)
 
-            # Draw ray casting lines and cars
             for i, car in enumerate(env.cars):
                 if i in env.active_cars:
                     for angle in range(0, 360, 45):

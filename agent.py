@@ -10,11 +10,9 @@ class QLearningAgent:
         self.q_table = {}
         
     def get_q_value(self, state, action):
-        # Return the Q-value for the given state-action pair, or 0 if not found.
         return self.q_table.get((state, action), 0.0)
 
     def choose_action(self, state):
-        # Choose an action using epsilon-greedy policy.
         if random.uniform(0, 1) < self.epsilon:
             return random.choice(self.action_space)
         else:

@@ -22,9 +22,7 @@ class CarEnvironment:
         return self.get_state()
 
     def step(self, action):
-        # Perform a step in the environment based on the given action.
         self.take_action(action)
-        # Check for collision after movement
         if self.player_car.collide(TRACK_BORDER_MASK) is not None:
             self.player_car.handle_collision()
 
@@ -35,7 +33,6 @@ class CarEnvironment:
 
 
     def take_action(self, action):
-        # Apply the given action to the car.
         if action == 0:  # Left
             self.player_car.rotate(left=True)
         elif action == 1:  # Right
@@ -49,7 +46,6 @@ class CarEnvironment:
         self.player_car.move()
 
     def get_state(self):
-        # Get distances to track borders
         distances = self.player_car.get_distances_to_border(TRACK_BORDER_MASK)
         
         x_discrete = discretize_state(self.player_car.x, 0, TRACK.get_width(), 10)
@@ -61,7 +57,6 @@ class CarEnvironment:
         return state
 
     def calculate_reward(self):
-        # Calculate the reward for the current state.
         reward = 0
         if self.player_car.collide(TRACK_BORDER_MASK) is not None:
             reward = -5
@@ -83,7 +78,6 @@ class CarEnvironment:
         return reward
 
     def is_done(self):
-        # Check if the episode is finished.
         if self.player_car.collide(FINISH_MASK, *FINISH_POSITION) is not None:
             return True
         return False
