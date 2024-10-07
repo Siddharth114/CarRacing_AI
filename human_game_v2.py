@@ -2,41 +2,35 @@ import pygame
 from pygame.math import Vector2
 import random
 import math
-from game_utils import resize_images_to_largest, scale_image  # Ensure these functions are defined in game_utils.py
+from game_utils import resize_images_to_largest, scale_image
 
-# Initialize Pygame
 pygame.init()
 
-# Resize images to the largest size among them
 GRASS, TRACK, TRACK_BORDER = resize_images_to_largest(
     ["assets/grass.jpg", "assets/bahrain_track.png", "assets/bahrain_track_border.png"]
 )
 
-# Create masks for collision detection
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
 
-# Load finish line image and mask
 FINISH = pygame.image.load("assets/finish.png")
 FINISH_MASK = pygame.mask.from_surface(FINISH)
 FINISH_POSITION = (480, 720)
 
-# Load and scale car image
 CAR = scale_image(pygame.image.load("assets/red-car.png"), 0.5)
 
-# Set up display
 WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Human Playable Game")
 
 class Car:
     def __init__(self, max_velocity, rotation_velocity):
-        self.original_image = CAR  # Store the original image for rotation
+        self.original_image = CAR
         self.image = self.original_image
         self.mask = pygame.mask.from_surface(self.image)
         self.max_velocity = max_velocity
         self.velocity = 0
         self.rotation_velocity = rotation_velocity
-        self.angle = 270  # Initial angle
+        self.angle = 270
         self.START_POSITION = (520, 740)
         self.x, self.y = self.START_POSITION
         self.acceleration = 0.1
@@ -58,7 +52,6 @@ class Car:
                 elif right:
                     self.angle -= self.rotation_velocity
 
-            # Rotate the original image to get the new rotated image
             self.rotated_image = pygame.transform.rotate(self.original_image, self.angle)
             self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
             self.mask = pygame.mask.from_surface(self.rotated_image)
@@ -92,7 +85,6 @@ class Car:
         new_y = self.y - vertical_velocity
         new_x = self.x - horizontal_velocity
 
-        # Store the current position before updating
         self.previous_position = (self.x, self.y)
 
         self.y = new_y
@@ -115,7 +107,6 @@ class Car:
         :param y: Y position of the other mask.
         :return: Point of intersection or None.
         """
-        # Calculate the offset based on the top-left positions
         offset_x = int(self.rect.left - x)
         offset_y = int(self.rect.top - y)
         point_of_intersection = mask.overlap(self.mask, (offset_x, offset_y))
@@ -123,9 +114,8 @@ class Car:
 
     def handle_collision(self):
         """Handle collision by reverting to previous position and adjusting velocity and angle."""
-        self.velocity *= 0.5  # Reduce speed upon collision
+        self.velocity *= 0.5
 
-        # Update the rotated image and mask after angle change
         self.rotated_image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
         self.mask = pygame.mask.from_surface(self.rotated_image)
@@ -170,7 +160,6 @@ def move_player(player_car):
     if not moved:
         player_car.reduce_speed()
 
-    # Check collision with track borders
     if player_car.collide(TRACK_BORDER_MASK) is not None:
         player_car.handle_collision()
 
@@ -198,7 +187,6 @@ def main():
 
         move_player(player_car)
 
-        # Collision with FINISH line
         finish_collision_point_of_intersection = player_car.collide(
             FINISH_MASK, *FINISH_POSITION
         )

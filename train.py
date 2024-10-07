@@ -32,7 +32,6 @@ def train():
 
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 24)
-    # Create a larger surface to accommodate the game and info panel
     main_surface = pygame.display.set_mode((WIDTH + 200, HEIGHT))
     pygame.display.set_caption("RL Car Racing Game")
     if not os.path.exists("models"):
@@ -55,7 +54,6 @@ def train():
             state = next_state
             total_reward += reward
 
-            # Check if the car is stuck
             if env.player_car.stuck_steps >= config.STUCK_TIMEOUT_STEPS:
                 print("Timeout steps reached")
                 done = True
@@ -63,9 +61,7 @@ def train():
                 print("Max negative rewards")
                 done = True
 
-            # Render the game state
-            main_surface.fill((50, 50, 50))  # Dark grey background
-            # Draw the game surface
+            main_surface.fill((50, 50, 50))
             game_surface = pygame.Surface((WIDTH, HEIGHT))
             game_surface.blit(GRASS, (0, 0))
             game_surface.blit(TRACK, (0, 0))
@@ -87,11 +83,9 @@ def train():
 
             main_surface.blit(game_surface, (0, 0))
 
-            # Draw the info panel
             info_surface = pygame.Surface((200, HEIGHT))
-            info_surface.fill((30, 30, 30))  # Darker grey for info panel
+            info_surface.fill((30, 30, 30))
 
-            # Draw episode and step information
             texts = [
                 f"Episode: {episode + 1}",
                 f"Step: {step}",
@@ -105,7 +99,6 @@ def train():
                 text_surface = font.render(text, True, (255, 255, 255))
                 info_surface.blit(text_surface, (10, 10 + i * 30))
 
-            # Draw the action visualization
             action_surface = draw_actions(info_surface, action)
             info_surface.blit(action_surface, (20, HEIGHT - 180))
             main_surface.blit(info_surface, (WIDTH, 0))
@@ -130,10 +123,8 @@ def train():
 
         rewards.append(total_reward)
         print(f"Episode {episode + 1}, Total Reward: {total_reward}")
-        # Decay epsilon
         agent.epsilon = max(0.01, agent.epsilon * 0.995)
 
-    # Save the final trained Q-table
     with open(f"models/q_table_final_{timestamp}.pkl", "wb") as f:
         pickle.dump(agent.q_table, f)
 

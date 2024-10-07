@@ -52,25 +52,21 @@ class CarEnvironment:
         # Get distances to track borders
         distances = self.player_car.get_distances_to_border(TRACK_BORDER_MASK)
         
-        # Discretize the car's position, angle, and distances
         x_discrete = discretize_state(self.player_car.x, 0, TRACK.get_width(), 10)
         y_discrete = discretize_state(self.player_car.y, 0, TRACK.get_height(), 10)
         angle_discrete = discretize_state(self.player_car.angle, 0, 360, 8)
         distances_discrete = [discretize_state(d, 0, max(TRACK.get_width(), TRACK.get_height()), 5) for d in distances]
         
-        # Combine all state information
         state = (x_discrete, y_discrete, angle_discrete, *distances_discrete)
         return state
 
     def calculate_reward(self):
         # Calculate the reward for the current state.
         reward = 0
-        # Penalize collision with track border
         if self.player_car.collide(TRACK_BORDER_MASK) is not None:
             reward = -5
             return reward
 
-        # Check finish line collision
         finish_collision = self.player_car.collide(FINISH_MASK, *FINISH_POSITION)
         if finish_collision is not None:
             if finish_collision[1] == 0:
@@ -79,7 +75,6 @@ class CarEnvironment:
             else:
                 reward += 100
 
-        # Reward for moving forward along the track
         if self.player_car.velocity > 0:
             reward += self.player_car.velocity * 0.5
         else:
@@ -89,7 +84,6 @@ class CarEnvironment:
 
     def is_done(self):
         # Check if the episode is finished.
-        # Episode is done if the car crosses the finish line
         if self.player_car.collide(FINISH_MASK, *FINISH_POSITION) is not None:
             return True
         return False

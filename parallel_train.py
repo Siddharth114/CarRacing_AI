@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from environment import ParallelLearningCarEnvironment
 from agent import ParallelQLearningAgent
 import config
-from utils import draw_actions
 from ai_game import (
     GRASS,
     TRACK,
@@ -65,15 +64,13 @@ def train():
             states = [s for s, d in zip(next_states, dones) if not d]
 
             # Update current episode best reward
-            if env.car_rewards:  # Check if there are any active cars
+            if env.car_rewards:
                 current_episode_best = max(max(env.car_rewards), current_episode_best)
                 best_reward_ever = max(best_reward_ever, current_episode_best)
 
-            # Rendering code
             main_surface.fill((50, 50, 50))
             game_surface = pygame.Surface((WIDTH, HEIGHT))
 
-            # Draw game elements
             game_surface.blit(GRASS, (0, 0))
             game_surface.blit(TRACK, (0, 0))
             game_surface.blit(FINISH, FINISH_POSITION)
@@ -99,7 +96,6 @@ def train():
             game_surface.blit(TRACK_BORDER, (0, 0))
             main_surface.blit(game_surface, (0, 0))
 
-            # Update info panel with best rewards
             info_surface = pygame.Surface((200, HEIGHT))
             info_surface.fill((30, 30, 30))
 
@@ -135,7 +131,6 @@ def train():
 
             step += 1
 
-        # Episode cleanup
         best_car_index = env.get_best_car_index()
         agent.clone_best_q_table(best_car_index)
 

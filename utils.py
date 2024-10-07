@@ -5,7 +5,6 @@ def discretize_state(value, min_value, max_value, num_bins):
     return min(num_bins - 1, max(0, int((value - min_value) / bin_size)))
 
 def draw_actions(surface, action):
-    # Draw a visualization of the available actions on the given surface.
     key_surface = pygame.Surface((160, 160))
     key_surface.set_alpha(128)
     key_surface.fill((50, 50, 50))
@@ -22,7 +21,6 @@ def draw_actions(surface, action):
         pygame.draw.rect(key_surface, color, rect, border_radius=5)  # Rounded rectangles for key shape
         pygame.draw.polygon(key_surface, (0, 0, 0), arrow)
     
-    # Draw the "do nothing" action
     if action == 4:
         pygame.draw.circle(key_surface, (255, 255, 255), (80, 80), 20)
     else:

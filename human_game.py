@@ -71,7 +71,6 @@ class Car:
         new_y = self.y - vertical_velocity
         new_x = self.x - horizontal_velocity
 
-        # Store the current position before updating
         self.previous_position = (self.x, self.y)
 
         self.y = new_y

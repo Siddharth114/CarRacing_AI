@@ -2,7 +2,7 @@ import pygame
 from pygame.math import Vector2
 import random
 import math
-from game_utils import resize_images_to_largest, scale_image  # Ensure these functions are defined in game_utils.py
+from game_utils import resize_images_to_largest, scale_image
 
 # Initialize Pygame
 pygame.init()
@@ -30,13 +30,13 @@ pygame.display.set_caption("Human Playable Game")
 
 class Car:
     def __init__(self, max_velocity, rotation_velocity):
-        self.original_image = CAR  # Store the original image for rotation
+        self.original_image = CAR  
         self.image = self.original_image
         self.mask = pygame.mask.from_surface(self.image)
         self.max_velocity = max_velocity
         self.velocity = 0
         self.rotation_velocity = rotation_velocity
-        self.angle = 270  # Initial angle
+        self.angle = 270  
         self.START_POSITION = (520, 740)
         self.x, self.y = self.START_POSITION
         self.acceleration = 0.1
@@ -122,7 +122,6 @@ class Car:
         :param y: Y position of the other mask.
         :return: Point of intersection or None.
         """
-        # Calculate the offset based on the top-left positions
         offset_x = int(self.rect.left - x)
         offset_y = int(self.rect.top - y)
         point_of_intersection = mask.overlap(self.mask, (offset_x, offset_y))
@@ -130,9 +129,8 @@ class Car:
 
     def handle_collision(self):
         """Handle collision by reverting to previous position and adjusting velocity and angle."""
-        self.velocity *= 0.5  # Reduce speed upon collision
+        self.velocity *= 0.5 
 
-        # Update the rotated image and mask after angle change
         self.rotated_image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
         self.mask = pygame.mask.from_surface(self.rotated_image)
@@ -153,7 +151,7 @@ class Car:
 
     def get_distances_to_border(self, track_border_mask):
         distances = []
-        for angle in range(0, 360, 45):  # Check 8 directions
+        for angle in range(0, 360, 45):
             distance = self.ray_cast(track_border_mask, angle)
             distances.append(distance)
         return distances
