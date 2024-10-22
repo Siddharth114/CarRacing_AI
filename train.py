@@ -48,8 +48,7 @@ def train():
         step = 0
 
         while not done:
-            # action = agent.choose_action(state)
-            action = 4
+            action = agent.choose_action(state)
             next_state, reward, done = env.step(action)
             agent.update_q_value(state, action, reward, next_state)
             state = next_state
