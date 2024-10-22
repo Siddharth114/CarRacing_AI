@@ -86,7 +86,7 @@ def train():
                 f"Total Reward: {total_reward:.2f}",
                 f"Epsilon: {agent.epsilon:.2f}",
                 f"Velocity: {env.player_car.velocity:.2f}",
-                f"Angle: {env.player_car.angle:.2f}",
+                f"Angle: {(env.player_car.angle%360):.2f}",
             ]
 
             for i, text in enumerate(texts):
