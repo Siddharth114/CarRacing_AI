@@ -20,6 +20,14 @@ WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Human Playable Game")
 
+TRACK_MASK = pygame.mask.from_surface(TRACK)
+GRASS_MASK = pygame.mask.from_surface(GRASS)
+
+for x in range(GRASS_MASK.get_size()[0]):
+    for y in range(GRASS_MASK.get_size()[1]):
+        if TRACK_MASK.get_at((x, y)):
+            GRASS_MASK.set_at((x, y), 0)
+
 class Car:
     def __init__(self, max_velocity, rotation_velocity):
         self.original_image = CAR
@@ -158,7 +166,7 @@ def move_player(player_car):
     if not moved:
         player_car.reduce_speed()
 
-    if player_car.collide(TRACK_BORDER_MASK) is not None:
+    if (player_car.collide(TRACK_BORDER_MASK) is not None) or (player_car.collide(GRASS_MASK) is not None):
         player_car.handle_collision()
 
 def main():
