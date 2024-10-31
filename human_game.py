@@ -35,6 +35,7 @@ class Car:
         self.previous_position = self.START_POSITION
         self.rotated_image = pygame.transform.rotate(self.image, self.angle)
         self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
+        self.distance_traveled = 0
 
     def rotate(self, left=False, right=False):
         """Rotate the car image and update the mask."""
@@ -84,6 +85,9 @@ class Car:
         new_x = self.x - horizontal_velocity
 
         self.previous_position = (self.x, self.y)
+        
+        distance_this_frame = math.sqrt((new_x - self.x)**2 + (new_y - self.y)**2)
+        self.distance_traveled += distance_this_frame
 
         self.y = new_y
         self.x = new_x
@@ -128,15 +132,32 @@ class Car:
         self.x, self.y = self.START_POSITION
         self.angle = 270
         self.velocity = 0
+        self.distance_traveled = 0
         self.rotated_image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.rotated_image.get_rect(center=(self.x, self.y))
         self.mask = pygame.mask.from_surface(self.rotated_image)
+
+def draw_info_panel(win, player_car):
+    """Draw information pane with distance traveled."""
+    font = pygame.font.Font(None, 36)
+    distance_text = font.render(f"Distance: {int(player_car.distance_traveled)}px", True, (255, 255, 255))
+    text_rect = distance_text.get_rect()
+    text_rect.topleft = (10, 10)
+    
+    background_rect = text_rect.copy()
+    background_rect.inflate_ip(20, 20)
+    background_surface = pygame.Surface(background_rect.size, pygame.SRCALPHA)
+    pygame.draw.rect(background_surface, (0, 0, 0, 128), background_surface.get_rect())
+    win.blit(background_surface, background_rect)
+    
+    win.blit(distance_text, text_rect)
 
 def draw(win, images, player_car):
     """Draw all game elements onto the window."""
     for image, position in images:
         win.blit(image, position)
     player_car.draw(win)
+    draw_info_panel(win, player_car)
     pygame.display.update()
 
 def move_player(player_car):
