@@ -87,7 +87,7 @@ class Car:
         self.previous_position = (self.x, self.y)
         
         distance_this_frame = math.sqrt((new_x - self.x)**2 + (new_y - self.y)**2)
-        self.distance_traveled += distance_this_frame
+        self.distance_traveled += distance_this_frame if self.velocity > 0 else -distance_this_frame
 
         self.y = new_y
         self.x = new_x
@@ -140,7 +140,7 @@ class Car:
 def draw_info_panel(win, player_car):
     """Draw information pane with distance traveled."""
     font = pygame.font.Font(None, 36)
-    distance_text = font.render(f"Distance: {int(player_car.distance_traveled)}px", True, (255, 255, 255))
+    distance_text = font.render(f"Effective Distance: {int(player_car.distance_traveled)}px", True, (255, 255, 255))
     text_rect = distance_text.get_rect()
     text_rect.topleft = (10, 10)
     
