@@ -140,7 +140,7 @@ class Car:
 def draw_info_panel(win, player_car):
     """Draw information pane with distance traveled."""
     font = pygame.font.Font(None, 36)
-    distance_text = font.render(f"Effective Distance: {int(player_car.distance_traveled)}px", True, (255, 255, 255))
+    distance_text = font.render(f"Distance Traveled: {int(player_car.distance_traveled)}", True, (255, 255, 255))
     text_rect = distance_text.get_rect()
     text_rect.topleft = (10, 10)
     
