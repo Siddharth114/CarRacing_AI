@@ -74,7 +74,7 @@ class CarEnvironment:
 
         distance_reward = self.player_car.distance_traveled / 10
         reward += distance_reward
-        
+
         self.total_reward += reward
         return reward
 
@@ -154,19 +154,17 @@ class ParallelLearningCarEnvironment:
     def calculate_reward(self, car):
         reward = 0
         if car.collide(TRACK_BORDER_MASK) is not None:
-            reward = -5
+            reward = -10
             return reward
+        
         finish_collision = car.collide(FINISH_MASK, *FINISH_POSITION)
         if finish_collision is not None:
-            if finish_collision[1] == 0:
-                car.handle_collision()
-                reward -= 5
-            else:
-                reward += 100
-        if car.velocity > 0:
-            reward += car.velocity * 0.5
-        else:
-            reward -= 1 
+            reward += 100
+            return reward
+
+        distance_reward = car.distance_traveled / 10
+        reward += distance_reward
+
         return reward
     
     def is_done(self, idx):

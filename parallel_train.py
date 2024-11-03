@@ -48,13 +48,13 @@ def train():
 
     episode_rewards = []
     best_reward_ever = float("-inf")
-
+    best_distance_ever = float("-inf")
     for episode in range(config.NUM_EPISODES):
         states = env.reset()
         population_done = False
         step = 0
         current_episode_best = float("-inf")
-
+        current_episode_best_distance = float("-inf")
         while not population_done:
             actions = agent.choose_actions(states)
             next_states, rewards, dones, population_done = env.step(actions)
@@ -66,6 +66,9 @@ def train():
             if env.car_rewards:
                 current_episode_best = max(max(env.car_rewards), current_episode_best)
                 best_reward_ever = max(best_reward_ever, current_episode_best)
+
+            current_episode_best_distance = max([car.distance_traveled for car in env.cars])
+            best_distance_ever = max(best_distance_ever, current_episode_best_distance)
 
             main_surface.fill((50, 50, 50))
             game_surface = pygame.Surface((WIDTH, HEIGHT))
@@ -105,14 +108,16 @@ def train():
                 "",
                 f"Current Episode:",
                 f"Best Reward: {current_episode_best:.2f}",
+                f"Best Distance: {current_episode_best_distance:.2f}",
                 "",
                 f"All Episodes:",
                 f"Best Reward: {best_reward_ever:.2f}",
+                f"Best Distance: {best_distance_ever:.2f}",
             ]
 
             for i, text in enumerate(texts):
                 color = (255, 255, 255)
-                if "Best Reward" in text:
+                if "Best" in text:
                     color = (0, 255, 0)
                 text_surface = font.render(text, True, color)
                 info_surface.blit(text_surface, (10, 10 + i * 25))
