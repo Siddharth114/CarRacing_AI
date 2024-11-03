@@ -60,24 +60,22 @@ class CarEnvironment:
 
     def calculate_reward(self):
         reward = 0
+
         if self.player_car.collide(TRACK_BORDER_MASK) is not None:
-            reward = -5
-            self.total_reward+=reward
+            reward = -10
+            self.total_reward += reward
             return reward
 
         finish_collision = self.player_car.collide(FINISH_MASK, *FINISH_POSITION)
         if finish_collision is not None:
-            if finish_collision[1] == 0:
-                self.player_car.handle_collision()
-                reward -= 5
-            else:
-                reward += 100
+            reward += 100
+            self.total_reward += reward
+            return reward
 
-        if self.player_car.velocity > 0:
-            reward += self.player_car.velocity * 0.5
-        else:
-            reward -= 1 
-        self.total_reward+=reward
+        distance_reward = self.player_car.distance_traveled / 10
+        reward += distance_reward
+        
+        self.total_reward += reward
         return reward
 
     def is_done(self):
