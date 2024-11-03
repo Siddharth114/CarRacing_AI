@@ -85,6 +85,7 @@ def train():
                 f"Step: {step}",
                 f"Total Reward: {total_reward:.2f}",
                 f"Epsilon: {agent.epsilon:.2f}",
+                f"Distance Traveled: {env.player_car.distance_traveled:.2f}",
                 f"Velocity: {env.player_car.velocity:.2f}",
                 f"Angle: {(env.player_car.angle%360):.2f}",
             ]
