@@ -1,6 +1,6 @@
 import pygame
 import math
-from game_utils import resize_images_to_largest, scale_image
+from game_utils import resize_images_to_largest, scale_image, has_completed_track
 
 pygame.init()
 
@@ -190,16 +190,6 @@ def move_player(player_car):
 
     if (player_car.collide(TRACK_BORDER_MASK) is not None) or (player_car.collide(GRASS_MASK) is not None):
         player_car.handle_collision()
-
-def has_completed_track(starting_angle, finish_position, current_car_position):
-    if starting_angle==0:
-        return finish_position[1] <= current_car_position[1]
-    elif starting_angle==90:
-        return finish_position[0] <= current_car_position[0]
-    elif starting_angle==180:
-        return finish_position[1] >= current_car_position[1]
-    elif starting_angle==270:
-        return finish_position[0] >= current_car_position[0]
 
 def main():
     """Main game loop."""
