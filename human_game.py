@@ -36,7 +36,8 @@ class Car:
         self.max_velocity = max_velocity
         self.velocity = 0
         self.rotation_velocity = rotation_velocity
-        self.angle = 270
+        self.initial_angle = 270
+        self.angle = self.initial_angle
         self.START_POSITION = (520, 740)
         self.x, self.y = self.START_POSITION
         self.acceleration = 0.1
@@ -190,6 +191,16 @@ def move_player(player_car):
     if (player_car.collide(TRACK_BORDER_MASK) is not None) or (player_car.collide(GRASS_MASK) is not None):
         player_car.handle_collision()
 
+def has_completed_track(starting_angle, finish_position, current_car_position):
+    if starting_angle==0:
+        return finish_position[1] <= current_car_position[1]
+    elif starting_angle==90:
+        return finish_position[0] <= current_car_position[0]
+    elif starting_angle==180:
+        return finish_position[1] >= current_car_position[1]
+    elif starting_angle==270:
+        return finish_position[0] >= current_car_position[0]
+
 def main():
     """Main game loop."""
     running = True
@@ -211,6 +222,13 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
                 break
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    running = False
+                    break
+                elif event.key == pygame.K_r:
+                    player_car.reset()
+            
 
         move_player(player_car)
 
@@ -218,9 +236,11 @@ def main():
             FINISH_MASK, *FINISH_POSITION
         )
         if finish_collision_point_of_intersection is not None:
-            if finish_collision_point_of_intersection[1] == 0:
-                player_car.handle_collision()
+            if has_completed_track(player_car.initial_angle, FINISH_POSITION, (player_car.x, player_car.y)):
+                print('Completed circuit!')
+                player_car.reset()
             else:
+                print('Go around the whole track!')
                 player_car.reset()
 
     pygame.quit()
