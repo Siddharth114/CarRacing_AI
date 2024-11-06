@@ -213,7 +213,7 @@ def main():
                 running = False
                 break
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q:
+                if event.key == pygame.K_ESCAPE:
                     running = False
                     break
                 elif event.key == pygame.K_r:
