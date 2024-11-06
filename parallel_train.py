@@ -128,7 +128,7 @@ def train():
             clock.tick(config.FPS)
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT or (event.type == pygame.keydown and event.key == pygame.K_ESCAPE):
                     pygame.quit()
                     return
 

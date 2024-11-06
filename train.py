@@ -102,7 +102,7 @@ def train():
             clock.tick(config.FPS)
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                     plt.figure()
                     plt.plot(range(len(rewards)), rewards, linestyle="--", marker="o")
@@ -113,6 +113,9 @@ def train():
                     plt.savefig(f"training_runs/training_run_{timestamp}.png")
                     pygame.quit()
                     return
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                    with open(f"models/q_table_intermediate_{timestamp}.pkl", "wb") as f:
+                        pickle.dump(agent.q_table, f)
 
             step += 1
 
