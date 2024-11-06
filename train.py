@@ -114,6 +114,7 @@ def train():
                     pygame.quit()
                     return
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                     with open(f"models/q_table_intermediate_{timestamp}.pkl", "wb") as f:
                         pickle.dump(agent.q_table, f)
 
