@@ -104,6 +104,7 @@ def train():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                    plt.figure(figsize=(12, 6))
                     plt.figure()
                     plt.plot(range(len(rewards)), rewards, linestyle="--", marker="o")
                     plt.xlabel("Episode")
