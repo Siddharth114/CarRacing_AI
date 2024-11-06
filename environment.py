@@ -10,6 +10,7 @@ from ai_game import (
 )
 from utils import discretize_state
 import config
+from game_utils import has_completed_track
 
 
 class CarEnvironment:
@@ -68,9 +69,14 @@ class CarEnvironment:
 
         finish_collision = self.player_car.collide(FINISH_MASK, *FINISH_POSITION)
         if finish_collision is not None:
-            reward += 100
-            self.total_reward += reward
-            return reward
+            if has_completed_track(self.player_car.initial_angle, FINISH_POSITION, (self.player_car.x, self.player_car.y)):
+                reward += 100
+                self.total_reward += reward
+                return reward
+            else:
+                reward = -10
+                self.total_reward += reward
+                return reward
 
         distance_reward = self.player_car.distance_traveled / 10
         reward += distance_reward
@@ -159,8 +165,12 @@ class ParallelLearningCarEnvironment:
         
         finish_collision = car.collide(FINISH_MASK, *FINISH_POSITION)
         if finish_collision is not None:
-            reward += 100
-            return reward
+            if has_completed_track(car.initial_angle, FINISH_POSITION, (car.x, car.y)):
+                reward += 100
+                return reward
+            else:
+                reward = -10
+                return reward
 
         distance_reward = car.distance_traveled / 10
         reward += distance_reward

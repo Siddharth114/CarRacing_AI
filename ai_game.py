@@ -30,7 +30,8 @@ class Car:
         self.max_velocity = max_velocity
         self.velocity = 0
         self.rotation_velocity = rotation_velocity
-        self.angle = 270  
+        self.initial_angle = 270
+        self.angle = self.angle
         self.START_POSITION = (520, 740)
         self.x, self.y = self.START_POSITION
         self.acceleration = 0.1
