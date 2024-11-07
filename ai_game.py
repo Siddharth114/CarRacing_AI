@@ -20,7 +20,15 @@ CAR = scale_image(pygame.image.load("assets/red-car.png"), 0.5)
 
 WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Human Playable Game")
+pygame.display.set_caption("AI Playable Game")
+TRACK_MASK = pygame.mask.from_surface(TRACK)
+GRASS_MASK = pygame.mask.from_surface(GRASS)
+
+for x in range(GRASS_MASK.get_size()[0]):
+    for y in range(GRASS_MASK.get_size()[1]):
+        if TRACK_MASK.get_at((x, y)):
+            GRASS_MASK.set_at((x, y), 0)
+
 
 class Car:
     def __init__(self, max_velocity, rotation_velocity):
@@ -96,8 +104,8 @@ class Car:
 
         self.previous_position = (self.x, self.y)
         
-        distance_this_frame = math.sqrt((new_x - self.x)**2 + (new_y - self.y)**2)
-        self.distance_traveled += distance_this_frame if self.velocity > 0 else -distance_this_frame
+        self.distance_this_frame = math.sqrt((new_x - self.x)**2 + (new_y - self.y)**2)
+        self.distance_traveled += self.distance_this_frame if self.velocity > 0 else -self.distance_this_frame
 
         self.y = new_y
         self.x = new_x
