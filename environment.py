@@ -52,12 +52,10 @@ class CarEnvironment:
     def get_state(self):
         distances = self.player_car.get_distances_to_border(TRACK_BORDER_MASK)
         
-        x_discrete = discretize_state(self.player_car.x, 0, TRACK.get_width(), 10)
-        y_discrete = discretize_state(self.player_car.y, 0, TRACK.get_height(), 10)
         angle_discrete = discretize_state(self.player_car.angle, 0, 360, 8)
         distances_discrete = [discretize_state(d, 0, max(TRACK.get_width(), TRACK.get_height()), 5) for d in distances]
         
-        state = (x_discrete, y_discrete, angle_discrete, *distances_discrete)
+        state = (angle_discrete, *distances_discrete)
         return state
 
     def calculate_reward(self):
@@ -137,13 +135,10 @@ class ParallelLearningCarEnvironment:
     def get_state(self, car):
         distances = car.get_distances_to_border(TRACK_BORDER_MASK)
         
-        x_discrete = discretize_state(car.x, 0, TRACK.get_width(), 10)
-        y_discrete = discretize_state(car.y, 0, TRACK.get_height(), 10)
-        
         angle_discrete = discretize_state(car.angle, 0, 360, 8)
         distances_discrete = [discretize_state(d, 0, max(TRACK.get_width(), TRACK.get_height()), 5) for d in distances]
 
-        return (x_discrete, y_discrete, angle_discrete, *distances_discrete)
+        return (angle_discrete, *distances_discrete)
     
     def take_action(self, car, action):
         if action == 0:  # Left
