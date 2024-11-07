@@ -79,7 +79,7 @@ class CarEnvironment:
                 self.total_reward += reward
                 return reward
 
-        distance_reward = self.player_car.distance_traveled / 10
+        distance_reward = self.player_car.distance_this_frame if self.player_car.velocity > 0 else -10*self.player_car.distance_this_frame
         reward += distance_reward
 
         self.total_reward += reward
@@ -173,7 +173,7 @@ class ParallelLearningCarEnvironment:
                 reward = -10
                 return reward
 
-        distance_reward = car.distance_traveled / 10
+        distance_reward = car.distance_this_frame if car.velocity > 0 else -10*car.distance_this_frame
         reward += distance_reward
 
         return reward
