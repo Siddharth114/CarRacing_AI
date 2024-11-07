@@ -33,19 +33,6 @@ def train():
     main_surface = pygame.display.set_mode((WIDTH + 200, HEIGHT))
     pygame.display.set_caption("Parallel RL Car Racing Game")
 
-    car_colors = [
-        (255, 0, 0),
-        (0, 255, 0),
-        (0, 0, 255),
-        (255, 255, 0),
-        (255, 0, 255),
-        (0, 255, 255),
-        (255, 128, 0),
-        (128, 0, 255),
-        (0, 255, 128),
-        (255, 128, 128),
-    ]
-
     episode_rewards = []
     best_reward_ever = float("-inf")
     best_distance_ever = float("-inf")
@@ -87,7 +74,7 @@ def train():
                         end_pos = (int(end_x), int(end_y))
                         pygame.draw.line(
                             game_surface,
-                            car_colors[i % len(car_colors)],
+                            (192, 235, 166),
                             start_pos,
                             end_pos,
                             1,
