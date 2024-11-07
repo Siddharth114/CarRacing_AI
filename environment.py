@@ -7,6 +7,7 @@ from ai_game import (
     WIN,
     WIDTH,
     HEIGHT,
+    GRASS_MASK
 )
 from utils import discretize_state
 import config
@@ -26,7 +27,7 @@ class CarEnvironment:
 
     def step(self, action):
         self.take_action(action)
-        if self.player_car.collide(TRACK_BORDER_MASK) is not None:
+        if (self.player_car.collide(TRACK_BORDER_MASK) is not None) or (self.player_car.collide(GRASS_MASK) is not None):
             self.player_car.handle_collision()
 
         new_state = self.get_state()
@@ -62,7 +63,7 @@ class CarEnvironment:
     def calculate_reward(self):
         reward = 0
 
-        if self.player_car.collide(TRACK_BORDER_MASK) is not None:
+        if (self.player_car.collide(TRACK_BORDER_MASK) is not None) or (self.player_car.collide(GRASS_MASK) is not None):
             reward = -10
             self.total_reward += reward
             return reward
@@ -114,7 +115,7 @@ class ParallelLearningCarEnvironment:
             car = self.cars[idx]
             self.take_action(car, action)
 
-            if car.collide(TRACK_BORDER_MASK) is not None:
+            if (car.collide(TRACK_BORDER_MASK) is not None) or (car.collide(GRASS_MASK) is not None):
                 car.handle_collision()
 
             new_state = self.get_state(car)
@@ -159,7 +160,7 @@ class ParallelLearningCarEnvironment:
 
     def calculate_reward(self, car):
         reward = 0
-        if car.collide(TRACK_BORDER_MASK) is not None:
+        if (car.collide(TRACK_BORDER_MASK) is not None) or (car.collide(GRASS_MASK) is not None):
             reward = -10
             return reward
         
