@@ -10,7 +10,7 @@ class QLearningAgent:
         self.q_table = {}
         
     def get_q_value(self, state, action):
-        return self.q_table.get((state, action), 0.0)
+        return self.q_table.get((state, action), 4)
 
     def choose_action(self, state):
         if random.uniform(0, 1) < self.epsilon:
@@ -41,7 +41,7 @@ class ParallelQLearningAgent:
                 actions.append(random.choice(self.action_space))
             else:
                 if state in q_table:
-                    actions.append(max(self.action_space, key=lambda a: q_table[state].get(a, 0)))
+                    actions.append(max(self.action_space, key=lambda a: q_table[state].get(a, 4)))
                 else:
                     actions.append(random.choice(self.action_space))
         return actions
